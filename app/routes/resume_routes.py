@@ -107,3 +107,18 @@ async def download_pdf(session_id: str):
          raise HTTPException(status_code=404, detail="PDF file missing on server")
          
     return FileResponse(path, filename="Resume.pdf", media_type="application/pdf")
+
+@router.post("/direct-generate")
+async def direct_generate_resume(resume_data: dict):
+    # Generate PDF in a temp file
+    temp_dir = tempfile.gettempdir()
+    import uuid
+    session_id = str(uuid.uuid4())
+    pdf_path = os.path.join(temp_dir, f"resume_{session_id}.pdf")
+    
+    try:
+        generator = ResumePDFGenerator(pdf_path)
+        generator.generate(resume_data)
+        return FileResponse(pdf_path, filename=f"{resume_data['contact']['name']}_Resume.pdf", media_type="application/pdf")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
