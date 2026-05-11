@@ -1,0 +1,29 @@
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from app.routes import resume_routes
+
+app = FastAPI(
+    title="AI Resume Builder Chatbot Backend",
+    description="Rule-based resume generation system without external AI APIs.",
+    version="1.0.0"
+)
+
+# CORS Configuration
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Adjust this for production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Include Routes
+app.include_router(resume_routes.router)
+
+@app.get("/")
+async def root():
+    return {"message": "AI Resume Builder API is running"}
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)

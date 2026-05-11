@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+pydantic[email]
+reportlab
+jinja2
+python-multipart
+python-dotenv
