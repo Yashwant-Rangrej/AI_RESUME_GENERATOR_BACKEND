@@ -8,11 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-<<<<<<< HEAD
 set VIRTUAL_ENV=C:\Users\Admin\Desktop\AI_RESUME_GENERATOR_BACKEND\venv
-=======
-set VIRTUAL_ENV=C:\Users\Admin\Desktop\AI_RESUME_GENERATOR_FRONTEND\backend\venv
->>>>>>> fbfd8126eb0389e17a37773a592f655c2f150cf8
 
 if not defined PROMPT set PROMPT=$P$G
 

@@ -35,11 +35,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-<<<<<<< HEAD
 VIRTUAL_ENV="C:\Users\Admin\Desktop\AI_RESUME_GENERATOR_BACKEND\venv"
-=======
-VIRTUAL_ENV="C:\Users\Admin\Desktop\AI_RESUME_GENERATOR_FRONTEND\backend\venv"
->>>>>>> fbfd8126eb0389e17a37773a592f655c2f150cf8
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
