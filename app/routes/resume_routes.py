@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, BackgroundTasks
+from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse
 from app.chatbot.engine import chatbot_engine
 from app.services.summary_service import generate_summary
