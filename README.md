@@ -1,88 +1,145 @@
-# 📄 AI Resume Builder - Backend
+# 🚀 Quick Resume - Backend
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com/)
-[![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![ReportLab](https://img.shields.io/badge/ReportLab-333333?style=for-the-badge)](https://www.reportlab.com/)
 
-A robust, FastAPI-powered backend engine that transforms user conversations into professional, recruiter-ready resumes. This service handles multi-step session management, rule-based data processing, and dynamic PDF generation.
+A powerful, FastAPI-based backend service designed to generate professional resumes through an interactive chatbot interface. This system uses a rule-based engine to collect user information and generates high-quality PDF resumes using ReportLab.
 
 ---
 
-## ✨ Key Features
+## 📖 Table of Contents
+- [Features](#-features)
+- [Architecture](#-architecture)
+- [Tech Stack](#-tech-stack)
+- [API Documentation](#-api-documentation)
+- [Getting Started](#-getting-started)
+- [Project Structure](#-project-structure)
+- [Developed By](#-developed-by)
 
-- **🧠 Intelligent Chatbot Engine**: A structured, session-based flow that guides users through the resume-building process.
-- **📄 High-Fidelity PDF Generation**: Precision-engineered PDF templates using `ReportLab` for professional formatting.
-- **🛠️ Automated Data Enhancement**: Built-in services that refine project descriptions and synthesize professional summaries.
-- **⚡ RESTful API Architecture**: Highly optimized endpoints for seamless integration with frontend frameworks like Next.js.
-- **🔒 Secure Session Management**: Robust handling of concurrent user sessions and temporary data storage.
-- **🌍 CORS Ready**: Pre-configured for cross-origin requests, ready for modern web deployments.
+---
+
+## ✨ Features
+
+- 🤖 **Interactive Chatbot Engine**: A structured, rule-based flow to collect personal details, experience, skills, and projects.
+- 📄 **Dynamic PDF Generation**: High-quality resume creation using `ReportLab` with ATS-friendly templates.
+- ⚡ **Data Enhancement**: Automated professional summary generation and description refinement.
+- 🔗 **RESTful API**: Clean, versioned endpoints for seamless integration.
+- 🛡️ **Pydantic Validation**: Robust data validation and error handling.
+- 🌐 **CORS Ready**: Configurable origins for frontend integration.
+
+---
+
+## 🏗️ Architecture
+
+```mermaid
+graph TD
+    A[Frontend] -->|Session Start| B(FastAPI Router)
+    B --> C{Chatbot Engine}
+    C -->|Ask/Answer| D[(Session Store)]
+    C -->|Complete| E[Data Enhancement Service]
+    E -->|Refined Data| F[PDF Generator]
+    F -->|PDF File| G[Temp Storage]
+    G -->|Download| A
+```
 
 ---
 
 ## 🛠️ Tech Stack
 
 | Technology | Purpose |
-| :--- | :--- |
-| **FastAPI** | High-performance web framework for building APIs. |
-| **ReportLab** | Industry-standard library for programmatic PDF creation. |
-| **Pydantic** | Strict data validation and settings management. |
-| **Uvicorn** | Lightning-fast ASGI server implementation. |
-| **Python-Dotenv** | Secure environment variable management. |
+|------------|---------|
+| **FastAPI** | High-performance Web Framework |
+| **ReportLab** | PDF Document Generation |
+| **Pydantic** | Data Validation & Settings |
+| **Uvicorn** | ASGI Server |
+| **Python-Dotenv** | Environment Management |
 
 ---
 
-## 🚀 Quick Start
+## 📡 API Documentation
 
-### 1. Prerequisites
+### Base URL: `http://localhost:8000/resume`
+
+#### 1. Start Session
+- **Method:** `POST /start`
+- **Response:**
+  ```json
+  {
+    "session_id": "uuid-string",
+    "first_question": "What is your full name?"
+  }
+  ```
+
+#### 2. Get Current Question
+- **Method:** `GET /question?session_id={id}`
+- **Response:**
+  ```json
+  "Please provide your email address."
+  ```
+
+#### 3. Submit Answer
+- **Method:** `POST /answer?session_id={id}&answer={text}`
+- **Response:**
+  ```json
+  {
+    "message": "Answer received",
+    "next_question": "What is your phone number?",
+    "is_completed": false
+  }
+  ```
+
+#### 4. Generate & Download
+- **Method:** `POST /generate?session_id={id}` -> Triggers generation.
+- **Method:** `GET /download?session_id={id}` -> Returns PDF file.
+
+#### 5. Direct PDF Generation
+- **Method:** `POST /direct-generate`
+- **Body:** `ResumeData` JSON object.
+- **Response:** Returns PDF file directly.
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
 - Python 3.9 or higher
-- `pip` or `poetry`
+- pip
 
-### 2. Installation & Setup
-```bash
-# Clone the repository
-git clone https://github.com/Yashwant-Rangrej/AI_RESUME_GENERATOR_BACKEND.git
-cd AI_RESUME_GENERATOR_BACKEND
+### Installation & Setup
 
-# Create and activate virtual environment
-python -m venv venv
-# Windows:
-.\venv\Scripts\activate
-# Unix/macOS:
-source venv/bin/activate
+1. **Clone the repo:**
+   ```bash
+   git clone <repository-url>
+   cd AI_RESUME_GENERATOR_BACKEND
+   ```
 
-# Install dependencies
-pip install -r requirements.txt
-```
+2. **Setup Virtual Environment:**
+   ```bash
+   python -m venv venv
+   # Windows
+   .\venv\Scripts\activate
+   # Linux/macOS
+   source venv/bin/activate
+   ```
 
-### 3. Environment Configuration
-Create a `.env` file in the root directory:
-```env
-PORT=8000
-HOST=0.0.0.0
-CORS_ORIGINS=http://localhost:3000
-```
+3. **Install Dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-### 4. Running the Server
-```bash
-# Development mode with auto-reload
-uvicorn app.main:app --reload
-```
-The API will be available at `http://localhost:8000`. You can access the interactive Swagger documentation at `http://localhost:8000/docs`.
+4. **Environment Configuration:**
+   Create a `.env` file:
+   ```env
+   PORT=8000
+   HOST=0.0.0.0
+   CORS_ORIGINS=http://localhost:3000
+   ```
 
----
-
-## 📡 API Reference
-
-### Resume Session Endpoints
-
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `POST` | `/resume/start` | Initializes a new resume session. |
-| `GET` | `/resume/question` | Retrieves the current active question for a session. |
-| `POST` | `/resume/answer` | Submits an answer and moves to the next step. |
-| `POST` | `/resume/generate` | Processes collected data and triggers PDF generation. |
-| `GET` | `/resume/download` | Serves the generated PDF file. |
-| `POST` | `/resume/direct-generate` | Generates a PDF instantly from raw JSON input. |
+5. **Run the Server:**
+   ```bash
+   uvicorn app.main:app --reload
+   ```
 
 ---
 
@@ -90,36 +147,21 @@ The API will be available at `http://localhost:8000`. You can access the interac
 
 ```text
 app/
-├── chatbot/       # Core engine logic & session flow management
-├── models/        # Pydantic schemas for request/response validation
-├── pdf/           # ReportLab templates & layout definitions
-├── routes/        # API endpoint definitions (FastAPI Routers)
-├── services/      # Logic for summary generation & data enhancement
-├── utils/         # Reusable utility functions and helpers
-└── main.py        # Application entry point & configuration
+├── chatbot/       # Rule-based logic and session management
+├── models/        # Pydantic schemas for data validation
+├── pdf/           # ReportLab PDF generation templates
+├── routes/        # API route definitions
+├── services/      # Data enhancement and summary generation
+├── templates/     # HTML/Text templates (if any)
+├── utils/         # Helper functions
+├── validators/    # Custom input validation logic
+└── main.py        # Application entry point
 ```
 
 ---
 
-## 🤝 Contributing
-
-Contributions are welcome! If you'd like to improve the PDF templates, chatbot logic, or API efficiency:
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
----
-
-## 👨‍💻 Author
+## 👨‍💻 Developed By
 
 **Yashwant Rangrej**
-- GitHub: [@Yashwant-Rangrej](https://github.com/Yashwant-Rangrej)
-- LinkedIn: [Yashwant Rangrej](https://www.linkedin.com/in/yashwant-rangrej-0856993a8/)
-
----
-
-## ⚖️ License
-
-Distributed under the MIT License. See `LICENSE` for more information.
+- [GitHub](https://github.com/Yashwant-Rangrej)
+- [LinkedIn](https://www.linkedin.com/in/yashwant-rangrej-0856993a8/)
